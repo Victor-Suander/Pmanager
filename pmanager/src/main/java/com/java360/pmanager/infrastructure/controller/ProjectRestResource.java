@@ -7,10 +7,7 @@ import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 
@@ -19,6 +16,7 @@ import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_
 @RestController
 @RequestMapping(PATH_PROJECTS)
 @RequiredArgsConstructor
+@SuppressWarnings("unused")
 public class ProjectRestResource {
 
     private final ProjectService projectService;
@@ -30,5 +28,25 @@ public class ProjectRestResource {
         return ResponseEntity
                 .created(URI.create(PATH_PROJECTS + "/" + project.getId()))
                 .body(ProjectDTO.create(project));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ProjectDTO> loadProject(@PathVariable("id") String projectId) {
+        Project project = projectService.loadProject(projectId);
+        return ResponseEntity.ok(ProjectDTO.create(project));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteProject(@PathVariable("id") String projectId) {
+        projectService.deleteProject(projectId);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<ProjectDTO> updateProject(@PathVariable("id") String projectId,
+                                                    @RequestBody @Valid SaveProjectDataDTO saveProjectData
+    ) {
+       Project project = projectService.updateProject(projectId, saveProjectData);
+       return ResponseEntity.ok(ProjectDTO.create(project));
     }
 }

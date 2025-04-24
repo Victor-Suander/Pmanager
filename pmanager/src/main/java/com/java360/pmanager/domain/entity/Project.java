@@ -1,7 +1,6 @@
 package com.java360.pmanager.domain.entity;
 
 import com.java360.pmanager.domain.model.ProjectStatus;
-import jakarta.annotation.Generated;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
