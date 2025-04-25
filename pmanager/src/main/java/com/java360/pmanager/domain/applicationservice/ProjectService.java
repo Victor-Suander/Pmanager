@@ -1,10 +1,12 @@
 package com.java360.pmanager.domain.applicationservice;
 
+import com.java360.pmanager.domain.entity.Member;
 import com.java360.pmanager.domain.entity.Project;
 import com.java360.pmanager.domain.exception.DuplicateProjectException;
 import com.java360.pmanager.domain.exception.InvalidProjectStatusException;
 import com.java360.pmanager.domain.exception.ProjectNotFoundException;
 import com.java360.pmanager.domain.model.ProjectStatus;
+import com.java360.pmanager.domain.repository.MemberRepository;
 import com.java360.pmanager.domain.repository.ProjectRepository;
 import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import jakarta.transaction.Transactional;
@@ -14,8 +16,15 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
+
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.Collectors.toSet;
 
 @Service
 @RequiredArgsConstructor
@@ -23,6 +32,7 @@ import java.util.logging.Logger;
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
+    private final MemberService memberService;
 
     @Transactional
     public Project createProject(SaveProjectDataDTO saveProjectData) {
@@ -39,6 +49,7 @@ public class ProjectService {
                 .build();
 
         projectRepository.save(project);
+        addMembersToProject(saveProjectData.getMemberIds(), project);
 
         log.info("Project created: {}", project);
         return project;
@@ -70,6 +81,8 @@ public class ProjectService {
         project.setFinalDate(saveProjectData.getFinalDate());
         project.setStatus(convertToProjectStatus(saveProjectData.getStatus()));
 
+        addMembersToProject(saveProjectData.getMemberIds(), project);
+
         return project;
     }
 
@@ -86,5 +99,16 @@ public class ProjectService {
                 .findByName(name)
                 .filter(p -> !Objects.equals(p.getId(), idToExclude))
                 .isPresent();
+    }
+
+    private void addMembersToProject(Set<String> memberIds, Project project) {
+        List<Member> members = Optional
+                .ofNullable(memberIds)
+                .orElse(Set.of())
+                .stream()
+                .map(memberService::loadMemberById)
+                .collect(toList());
+
+        project.setMembers(members);
     }
 }

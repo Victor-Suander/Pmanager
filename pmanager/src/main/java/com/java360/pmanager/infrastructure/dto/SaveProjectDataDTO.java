@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NonNull;
 
 import java.time.LocalDate;
+import java.util.Set;
 
 @Data
 public class SaveProjectDataDTO {
@@ -27,6 +28,8 @@ public class SaveProjectDataDTO {
 
 
     private final String status;
+
+    private final Set<String> memberIds;
 
     @AssertTrue(message = "Dates are not consistent")
     @SuppressWarnings("unused")

@@ -6,6 +6,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 import static jakarta.persistence.GenerationType.UUID;
 
 @Entity
@@ -32,4 +34,7 @@ public class Member {
 
     @Column(name = "deleted", nullable = false)
     private Boolean deleted;
+
+    @ManyToMany(mappedBy = "members")
+    private List<Project> projects;
 }
