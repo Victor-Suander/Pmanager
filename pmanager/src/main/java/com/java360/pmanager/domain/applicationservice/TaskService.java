@@ -1,8 +1,10 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.entity.Task;
+import com.java360.pmanager.domain.exception.InvalidProjectStatusException;
 import com.java360.pmanager.domain.exception.InvalidTaskStatusException;
 import com.java360.pmanager.domain.exception.TaskNotFoundException;
+import com.java360.pmanager.domain.model.ProjectStatus;
 import com.java360.pmanager.domain.model.TaskStatus;
 import com.java360.pmanager.domain.repository.TaskRepository;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
@@ -46,21 +48,21 @@ public class TaskService {
 
     @Transactional
     public Task updateTask(String taskId, SaveTaskDataDTO saveTaskData) {
-        Task task = loadTask(taskId);
+       Task task = loadTask(taskId);
 
-        task.setTitle(saveTaskData.getTitle());
-        task.setDescription(saveTaskData.getDescription());
-        task.setNumberOfDays(saveTaskData.getNumberOfDays());
-        task.setStatus(convertToTaskStatus(saveTaskData.getStatus()));
+       task.setTitle(saveTaskData.getTitle());
+       task.setDescription(saveTaskData.getDescription());
+       task.setNumberOfDays(saveTaskData.getNumberOfDays());
+       task.setStatus(convertToUpdateStatus(saveTaskData.getStatus()));
 
-        return task;
+       return task;
     }
 
-    private TaskStatus convertToTaskStatus(String statusStr) {
-        try{
+    private TaskStatus convertToUpdateStatus(String statusStr) {
+        try {
             return TaskStatus.valueOf(statusStr);
-        }catch (IllegalArgumentException | NullPointerException e) {
-            throw new InvalidTaskStatusException(statusStr);
+        } catch (IllegalArgumentException | NullPointerException e) {
+            throw new InvalidProjectStatusException(statusStr);
         }
     }
 }

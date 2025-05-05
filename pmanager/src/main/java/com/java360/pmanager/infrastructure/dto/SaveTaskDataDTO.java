@@ -20,5 +20,5 @@ public class SaveTaskDataDTO {
     @Positive(message = "Number of days must be positive")
     private final Integer numberOfDays;
 
-    private final TaskStatus status;
+    private final String status;
 }

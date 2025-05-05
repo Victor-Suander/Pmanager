@@ -46,4 +46,13 @@ public class TaskRestResource {
         taskService.deleteTask(taskId);
         return ResponseEntity.noContent().build();
     }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<TaskDTO> updateTask(
+            @PathVariable("id") String taskId,
+            @RequestBody @Valid SaveTaskDataDTO saveTaskData
+    ) {
+        Task task = taskService.updateTask(taskId, saveTaskData);
+        return ResponseEntity.ok(TaskDTO.create(task));
+    }
 }
