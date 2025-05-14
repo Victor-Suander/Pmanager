@@ -17,3 +17,5 @@ spring:
       enabled: true
   jpa:
     show-sql: true
+app:
+  pageSize: 3

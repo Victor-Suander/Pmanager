@@ -9,7 +9,9 @@ import com.java360.pmanager.domain.exception.TaskNotFoundException;
 import com.java360.pmanager.domain.model.ProjectStatus;
 import com.java360.pmanager.domain.model.TaskStatus;
 import com.java360.pmanager.domain.repository.TaskRepository;
+import com.java360.pmanager.infrastructure.config.AppConfigProperties;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
+import com.java360.pmanager.infrastructure.util.PaginationHelper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -30,6 +32,7 @@ public class TaskService {
     private final ProjectService projectService;
     private final MemberService memberService;
     private final TaskRepository taskRepository;
+    private final AppConfigProperties prosp;
 
     @Transactional
     public Task createTask(SaveTaskDataDTO saveTaskData) {
@@ -87,7 +90,7 @@ public class TaskService {
             String statusStr,
             String partialTitle,
             Integer page,
-            String direction,
+            String directionStr,
             List<String> properties
     ){
         Sort sort = Sort.by(Sort.Direction.DESC,"title");
@@ -97,7 +100,7 @@ public class TaskService {
                 memberId,
                 Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
                 partialTitle,
-                PageRequest.of(Optional.ofNullable(page).orElse(0),3, sort)
+                PaginationHelper.createPageable(page, prosp.getPageSize(), directionStr, properties)
         );
     }
 

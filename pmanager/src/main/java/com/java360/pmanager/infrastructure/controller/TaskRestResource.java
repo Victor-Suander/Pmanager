@@ -8,6 +8,7 @@ import com.java360.pmanager.infrastructure.dto.ProjectDTO;
 import com.java360.pmanager.infrastructure.dto.SaveProjectDataDTO;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
 import com.java360.pmanager.infrastructure.dto.TaskDTO;
+import com.java360.pmanager.infrastructure.util.SortProperties;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_PROJECTS;
 import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_TASKS;
@@ -66,10 +68,20 @@ public class TaskRestResource {
             @RequestParam(value = "partialTitle",required = false) String partialTitle,
             @RequestParam(value = "page", required = false) Integer page,
             @RequestParam(value = "direction", required = false) String direction,
-            @RequestParam(value = "sort", required = false) String properties
+            @RequestParam(value = "sort", required = false) SortProperties properties
     ){
-       Page<Task> tasks =  taskService.findTasks(projectId, memberId, status, partialTitle, page);
-
+       Page<Task> tasks =  taskService.findTasks(
+               projectId,
+               memberId,
+               status,
+               partialTitle,
+               page,
+               direction,
+               Optional
+                       .ofNullable(properties)
+                       .map(SortProperties::getSortPropertiesList)
+                       .orElse(List.of())
+       );
        return ResponseEntity.ok(tasks.stream().map(TaskDTO::create).toList());
     }
 }
