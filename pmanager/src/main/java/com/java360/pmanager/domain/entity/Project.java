@@ -49,4 +49,7 @@ public class Project {
             inverseJoinColumns = @JoinColumn(name = "member_id")
     )
     private List<Member> members;
+
+    @OneToMany(mappedBy = "project", orphanRemoval = true)
+    private List<Task> tasks;
 }

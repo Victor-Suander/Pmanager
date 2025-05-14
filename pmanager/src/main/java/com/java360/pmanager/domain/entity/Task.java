@@ -34,4 +34,13 @@ public class Task {
     @Column(name = "status" , nullable = false)
     @Enumerated(STRING)
     private TaskStatus status;
+
+
+    @ManyToOne
+    @JoinColumn(name = "project_id")
+    private Project project;
+
+    @ManyToOne
+    @JoinColumn(name = "assigned_member")
+    private Member assignedMember;
 }

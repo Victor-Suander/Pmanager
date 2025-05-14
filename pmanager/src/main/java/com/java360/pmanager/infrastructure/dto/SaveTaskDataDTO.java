@@ -21,4 +21,8 @@ public class SaveTaskDataDTO {
     private final Integer numberOfDays;
 
     private final String status;
+
+    private final String projectId;
+
+    private final String memberId;
 }

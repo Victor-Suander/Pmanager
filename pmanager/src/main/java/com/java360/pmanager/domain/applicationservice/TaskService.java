@@ -1,5 +1,7 @@
 package com.java360.pmanager.domain.applicationservice;
 
+import com.java360.pmanager.domain.entity.Member;
+import com.java360.pmanager.domain.entity.Project;
 import com.java360.pmanager.domain.entity.Task;
 import com.java360.pmanager.domain.exception.InvalidProjectStatusException;
 import com.java360.pmanager.domain.exception.InvalidTaskStatusException;
@@ -10,7 +12,14 @@ import com.java360.pmanager.domain.repository.TaskRepository;
 import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Objects;
+import java.util.Optional;
 
 import static com.java360.pmanager.domain.model.TaskStatus.PENDING;
 
@@ -18,16 +27,23 @@ import static com.java360.pmanager.domain.model.TaskStatus.PENDING;
 @RequiredArgsConstructor
 public class TaskService {
 
+    private final ProjectService projectService;
+    private final MemberService memberService;
     private final TaskRepository taskRepository;
 
     @Transactional
     public Task createTask(SaveTaskDataDTO saveTaskData) {
+        Project project = getProjectIfPossible(saveTaskData.getProjectId());
+        Member member = getMemberIfPossible(saveTaskData.getMemberId());
+
         Task task = Task
                 .builder()
                 .title((saveTaskData.getTitle()))
                 .description(saveTaskData.getDescription())
                 .numberOfDays(saveTaskData.getNumberOfDays())
                 .status(PENDING)
+                .project(project)
+                .assignedMember(member)
                 .build();
 
         taskRepository.save(task);
@@ -48,21 +64,64 @@ public class TaskService {
 
     @Transactional
     public Task updateTask(String taskId, SaveTaskDataDTO saveTaskData) {
-       Task task = loadTask(taskId);
+
+        Project project = getProjectIfPossible(saveTaskData.getProjectId());
+        Member member = getMemberIfPossible(saveTaskData.getMemberId());
+
+        Task task = loadTask(taskId);
 
        task.setTitle(saveTaskData.getTitle());
        task.setDescription(saveTaskData.getDescription());
        task.setNumberOfDays(saveTaskData.getNumberOfDays());
-       task.setStatus(convertToUpdateStatus(saveTaskData.getStatus()));
+       task.setStatus(convertToTaskStatus(saveTaskData.getStatus()));
+       task.setProject(project);
+       task.setAssignedMember(member);
 
        return task;
     }
 
-    private TaskStatus convertToUpdateStatus(String statusStr) {
+
+    public Page<Task> findTasks(
+            String projectId,
+            String memberId,
+            String statusStr,
+            String partialTitle,
+            Integer page,
+            String direction,
+            List<String> properties
+    ){
+        Sort sort = Sort.by(Sort.Direction.DESC,"title");
+
+        return taskRepository.find(
+                projectId,
+                memberId,
+                Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
+                partialTitle,
+                PageRequest.of(Optional.ofNullable(page).orElse(0),3, sort)
+        );
+    }
+
+    private TaskStatus convertToTaskStatus(String statusStr) {
         try {
             return TaskStatus.valueOf(statusStr);
         } catch (IllegalArgumentException | NullPointerException e) {
             throw new InvalidProjectStatusException(statusStr);
         }
+    }
+
+    private Member getMemberIfPossible(String memberId) {
+        Member member = null;
+        if (!Objects.isNull(memberId)) {
+            member = memberService.loadMemberById(memberId);
+        }
+        return member;
+    }
+
+    private Project getProjectIfPossible(String projectId ) {
+        Project project = null;
+        if (!Objects.isNull(projectId)) {
+            project = projectService.loadProject(projectId);
+        }
+        return project;
     }
 }

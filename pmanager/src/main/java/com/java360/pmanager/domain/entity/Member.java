@@ -37,4 +37,5 @@ public class Member {
 
     @ManyToMany(mappedBy = "members")
     private List<Project> projects;
+
 }

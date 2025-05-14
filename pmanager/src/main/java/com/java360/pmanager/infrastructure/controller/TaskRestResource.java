@@ -10,10 +10,12 @@ import com.java360.pmanager.infrastructure.dto.SaveTaskDataDTO;
 import com.java360.pmanager.infrastructure.dto.TaskDTO;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
+import java.util.List;
 
 import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_PROJECTS;
 import static com.java360.pmanager.infrastructure.controller.RestConstants.PATH_TASKS;
@@ -54,5 +56,20 @@ public class TaskRestResource {
     ) {
         Task task = taskService.updateTask(taskId, saveTaskData);
         return ResponseEntity.ok(TaskDTO.create(task));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<TaskDTO>> findTasks(
+            @RequestParam(value = "projectId",required = false) String projectId,
+            @RequestParam(value = "memberId",required = false) String memberId,
+            @RequestParam(value = "status",required = false) String status,
+            @RequestParam(value = "partialTitle",required = false) String partialTitle,
+            @RequestParam(value = "page", required = false) Integer page,
+            @RequestParam(value = "direction", required = false) String direction,
+            @RequestParam(value = "sort", required = false) String properties
+    ){
+       Page<Task> tasks =  taskService.findTasks(projectId, memberId, status, partialTitle, page);
+
+       return ResponseEntity.ok(tasks.stream().map(TaskDTO::create).toList());
     }
 }
