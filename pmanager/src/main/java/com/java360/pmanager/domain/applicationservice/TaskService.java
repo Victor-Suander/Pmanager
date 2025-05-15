@@ -100,7 +100,7 @@ public class TaskService {
                 memberId,
                 Optional.ofNullable(statusStr).map(this::convertToTaskStatus).orElse(null),
                 partialTitle,
-                PaginationHelper.createPageable(page, prosp.getPageSize(), directionStr, properties)
+                PaginationHelper.createPageable(page, prosp.getGeneral().getPageSize(), directionStr, properties)
         );
     }
 

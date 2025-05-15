@@ -24,5 +24,14 @@ spring:
     show-sql: true
     hibernate:
       ddl-auto: none
+  data:
+    mongodb:
+      host: localhost
+      port: 27017
+      database: pmanagerdb
 app:
-  pageSize: 3
+  general:
+   pageSize: 3
+  security:
+    apiKey: thekey
+    expirationDays: 2

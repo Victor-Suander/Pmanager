@@ -4,9 +4,13 @@ import com.java360.pmanager.infrastructure.config.AppConfigProperties;
 import jdk.jfr.Enabled;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.boot.autoconfigure.security.servlet.UserDetailsServiceAutoConfiguration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 
-@SpringBootApplication
+@SpringBootApplication(
+		exclude = { SecurityAutoConfiguration.class, UserDetailsServiceAutoConfiguration.class }
+)
 @EnableConfigurationProperties(AppConfigProperties.class)
 public class PManagerApplication {
 
