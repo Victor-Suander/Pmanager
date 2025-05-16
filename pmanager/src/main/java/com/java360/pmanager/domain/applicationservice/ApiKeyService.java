@@ -1,6 +1,7 @@
 package com.java360.pmanager.domain.applicationservice;
 
 import com.java360.pmanager.domain.document.ApiKey;
+import com.java360.pmanager.domain.exception.ApiKeyExpiredException;
 import com.java360.pmanager.domain.exception.ApiKeyNotFoundException;
 import com.java360.pmanager.domain.repository.ApiKeyRepository;
 import com.java360.pmanager.infrastructure.config.AppConfigProperties;
@@ -43,9 +44,23 @@ public class ApiKeyService {
 
     }
 
+    public void validateApiKey(String apiKey) {
+        ApiKey apiKeyObj = loadApiKeyByValue(apiKey);
+
+        if(apiKeyObj.isExpired(Instant.now())) {
+            throw new ApiKeyExpiredException(apiKeyObj.getId());
+        }
+    }
+
      private ApiKey loadApiKeyById(String id) {
         return apiKeyRepository
                 .findById(id)
                 .orElseThrow(() -> new ApiKeyNotFoundException(id));
      }
+
+    private ApiKey loadApiKeyByValue(String apiKey) {
+        return apiKeyRepository
+                .findByValue(apiKey)
+                .orElseThrow(() -> new ApiKeyNotFoundException(apiKey));
+    }
 }
