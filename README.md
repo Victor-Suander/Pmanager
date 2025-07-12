@@ -33,12 +33,12 @@ membros e status dos projetos de forma eficiente.
 
 src/
 - domain/ # Entidades, serviços e repositórios
- -- entity/ # Classes como Member, Project e Task
- -- repository/ # Interfaces JPA
- -- applicationservice/# Lógica de negócio
- -- exception/ # Exceções personalizadas
+ - entity/ # Classes como Member, Project e Task
+ - repository/ # Interfaces JPA
+ - applicationservice/# Lógica de negócio
+ - exception/ # Exceções personalizadas
 - infrastructure/
- -- controller/ # Endpoints REST
- -- dto/ # Objetos de transferência de dados
- -- security/ # Filtro e autenticação com API Key
- -- config/ # Configurações da aplicação
+ - controller/ # Endpoints REST
+ - dto/ # Objetos de transferência de dados
+ - security/ # Filtro e autenticação com API Key
+ - config/ # Configurações da aplicação
