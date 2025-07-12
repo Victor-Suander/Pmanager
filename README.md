@@ -32,13 +32,17 @@ membros e status dos projetos de forma eficiente.
 ## 📁 Estrutura de Pastas
 
 src/
-- domain/ # Entidades, serviços e repositórios
- - entity/ # Classes como Member, Project e Task
- - repository/ # Interfaces JPA
- - applicationservice/# Lógica de negócio
- - exception/ # Exceções personalizadas
-- infrastructure/
- - controller/ # Endpoints REST
- - dto/ # Objetos de transferência de dados
- - security/ # Filtro e autenticação com API Key
- - config/ # Configurações da aplicação
+- ├── domain/ # Entidades, serviços e repositórios
+- │ ├── applicationservice/# Lógica de negócio
+- │ ├── document
+- │ ├── entity/ # Classes como Member, Project e Task
+- │ ├── exception/ # Exceções personalizadas
+- │ ├── model/
+- │ └── repository/ # Interfaces JPA
+- ├── infrastructure/
+- │ ├── config/ # Configurações da aplicação
+- │ ├── controller/ # Endpoints REST
+- │ ├── dto/ # Objetos de transferência de dados
+- │ ├── exception/ # Exceções personalizadas
+- │ ├── security/ # Filtro e autenticação com API Key
+- │ └── util/
