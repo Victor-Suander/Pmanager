@@ -29,6 +29,12 @@ membros e status dos projetos de forma eficiente.
 
 ---
 
+##  Domain Model 
+
+<img width="564" height="756" alt="Screenshot 2025-07-12 163158" src="https://github.com/user-attachments/assets/3a52024e-ec51-478f-b272-6a8b6fcfcc3e" />
+
+---
+
 ## 📁 Estrutura de Pastas
 
 src/
