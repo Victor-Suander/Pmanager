@@ -160,4 +160,4 @@ Body:
 - Victor Suander Camargo Martins
 - Desenvolvedor Java em transição de carreira, focado em backend com Spring Boot.
 - GitHub: github.com/Victor-Suander
-- LinkedIn: www.linkedin.com/in/victorsuander
+- LinkedIn: linkedin.com/in/victorsuander
