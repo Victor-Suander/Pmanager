@@ -1,31 +1,42 @@
-# PManager  – Gerenciador de Projetos com Spring Boot
+# PManager - Project Management API
 
-O **PManager** é uma aplicação backend desenvolvida em Java com Spring Boot para gerenciamento de projetos,
-tarefas e membros de equipe. Ideal para organizações ou squads que desejam controlar o progresso de tarefas, 
-membros e status dos projetos de forma eficiente.
-+
+API REST desenvolvida em Java com Spring Boot para gerenciamento de projetos, tarefas e membros de equipe.
+
+Este projeto foi criado com o objetivo de praticar arquitetura em camadas, desenvolvimento de APIs REST, persistência com JPA e implementação de segurança básica.
+
 ---
 
-##  Tecnologias Utilizadas
+## Sobre o Projeto
 
-- Java 21
+O PManager é um backend que permite:
+
+- Criar e gerenciar projetos
+- Criar tarefas associadas a projetos
+- Atualizar status de tarefas
+- Gerenciar membros da equipe
+- Listar dados com paginação e ordenação
+- Autenticação simples via API Key
+
+A aplicação segue boas práticas de organização de código, separando responsabilidades entre:
+
+- Controller (camada de entrada HTTP)
+- Service (regras de negócio)
+- Repository (acesso a dados)
+- Entities (modelo de domínio)
+- Exception Handling (tratamento global de erros)
+
+---
+
+## Tecnologias Utilizadas
+
+- Java 17+
 - Spring Boot
-- Spring Security (autenticação via API Key)
+- Spring Web
 - Spring Data JPA
-- H2 Database (para testes)
+- Spring Security
+- H2 Database
+- Docker
 - Maven
-
----
-
-##  Funcionalidades
-
-- Cadastro e listagem de membros
-- Criação e gerenciamento de projetos
-- Controle de tarefas por projeto
-- Atualização de status (tarefas e projetos)
-- Autenticação por API Key
-- Exceções customizadas e tratadas globalmente
-- Paginação e ordenação de resultados
 
 ---
 
@@ -35,20 +46,118 @@ membros e status dos projetos de forma eficiente.
 
 ---
 
-##  Estrutura de Pastas
+## Arquitetura
 
-src/
-- ├── domain/ # Entidades, serviços e repositórios
-- │ ├── applicationservice/# Lógica de negócio
-- │ ├── document
-- │ ├── entity/ # Classes como Member, Project e Task
-- │ ├── exception/ # Exceções personalizadas
-- │ ├── model/
-- │ └── repository/ # Interfaces JPA
-- ├── infrastructure/
-- │ ├── config/ # Configurações da aplicação
-- │ ├── controller/ # Endpoints REST
-- │ ├── dto/ # Objetos de transferência de dados
-- │ ├── exception/ # Exceções personalizadas
-- │ ├── security/ # Filtro e autenticação com API Key
-- │ └── util/
+O projeto utiliza arquitetura em camadas:
+
+- Código: Controller → Service → Repository → Database
+
+Essa estrutura facilita:
+
+- Manutenção
+- Testabilidade
+- Escalabilidade
+- Separação de responsabilidades
+
+---
+
+## Segurança
+
+A API utiliza autenticação baseada em API Key.
+
+As requisições protegidas devem incluir no header:
+
+- Código: X-API-KEY: thekey
+
+---
+
+ ## Como Executar o Projeto
+
+- Clone o repositório
+
+git clone https://github.com/Victor-Suander/Pmanager.git
+
+- Entre na pasta
+
+cd Pmanager
+
+- Execute com Maven
+
+./mvnw spring-boot:run
+
+Ou rode diretamente pela sua IDE.
+
+---
+
+## Exemplos de Endpoints
+
+### Criar Projeto
+
+- POST /projects
+
+Body:
+
+- {
+-   "name": "Sistema de Vendas",
+-   "description": "Projeto para controle de vendas",
+-   "status": "IN_PROGRESS"
+- }
+
+---
+
+## Listar Projetos (com paginação)
+
+- GET /projects?page=0&size=5&sort=name
+
+---
+
+## Criar Tarefa
+
+- POST /tasks
+
+- {
+-   "title": "Criar API",
+-   "description": "Desenvolver endpoints principais",
+-   "status": "TODO",
+-   "projectId": 1
+- }
+
+---
+
+## Conceitos Aplicados
+
+- RESTful API design
+- Paginação e ordenação com Spring Data
+- Tratamento global de exceções
+- Injeção de dependência
+- Padrão de arquitetura em camadas
+- Princípios básicos de Clean Code
+
+---
+
+## Objetivo do Projeto
+
+- Demonstrar conhecimento em:
+- Desenvolvimento backend com Java
+- Construção de APIs empresariais
+- Estruturação de aplicações escaláveis
+- Organização e clareza de código
+
+---
+
+## Melhorias Futuras
+
+- Implementar autenticação com JWT
+- Adicionar testes unitários
+- Implementar documentação com Swagger/OpenAPI
+- Migrar para banco de dados PostgreSQL
+- Deploy em ambiente cloud (Render, Railway ou AWS)
+
+---
+
+## Sobre o Autor
+
+- Victor Suander Camargo Martins
+- Desenvolvedor Java em transição de carreira, focado em backend com Spring Boot.
+- GitHub: github.com/Victor-Suander
+- LinkedIn: www.linkedin.com/in/victorsuander
