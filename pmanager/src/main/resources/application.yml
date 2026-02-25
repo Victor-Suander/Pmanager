@@ -16,7 +16,7 @@ spring:
     url: jdbc:mysql://localhost:3306/pmanagerdb
     driverClassName: com.mysql.cj.jdbc.Driver
     username: root
-    password: Suanderr12.
+    password: 123456@
 #  h2:
 #    console:
 #      enabled: true
