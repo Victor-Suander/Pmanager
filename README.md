@@ -1,4 +1,4 @@
-# PManager 📋 – Gerenciador de Projetos com Spring Boot
+# PManager  – Gerenciador de Projetos com Spring Boot
 
 O **PManager** é uma aplicação backend desenvolvida em Java com Spring Boot para gerenciamento de projetos,
 tarefas e membros de equipe. Ideal para organizações ou squads que desejam controlar o progresso de tarefas, 
@@ -6,7 +6,7 @@ membros e status dos projetos de forma eficiente.
 +
 ---
 
-## 🚀 Tecnologias Utilizadas
+##  Tecnologias Utilizadas
 
 - Java 21
 - Spring Boot
@@ -17,7 +17,7 @@ membros e status dos projetos de forma eficiente.
 
 ---
 
-## ⚙️ Funcionalidades
+##  Funcionalidades
 
 - Cadastro e listagem de membros
 - Criação e gerenciamento de projetos
@@ -35,7 +35,7 @@ membros e status dos projetos de forma eficiente.
 
 ---
 
-## 📁 Estrutura de Pastas
+##  Estrutura de Pastas
 
 src/
 - ├── domain/ # Entidades, serviços e repositórios
